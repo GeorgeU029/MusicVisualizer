@@ -1,6 +1,6 @@
 let audioContext;
 let analyser;
-let selectedTemplate = "drawBars";
+let selectedTemplate = "Bars";
 
 // create and edit canvas
 const canvas = document.getElementById('visualizer');
@@ -92,6 +92,66 @@ function visualize() {
             x += barWidth; 
         }
     }
+    function drawBars2() {
+        requestAnimationFrame(drawBars2);
+        analyser.getByteFrequencyData(dataArray);
+
+        //start canvas state
+        canvasContext.clearRect(0, 0, canvas.width, canvas.height);
+        canvasContext.fillStyle = 'rgb(0, 0, 0)';
+        canvasContext.fillRect(0, 0, canvas.width, canvas.height);
+
+        const desiredBarCount = 200;
+        const barWidth = canvas.width / desiredBarCount;
+        let x = 0;
+
+        //color for bars in this order
+        const colors = [
+            'rgb(8, 217, 214)',
+            'rgb(37, 42, 52)',
+            'rgb(255, 46, 99)',
+            'rgb(234, 234, 234)',
+        ];
+        
+        // creation of music bars
+        for (let i = 0; i < desiredBarCount; i++) {
+            const frequencyIndex = Math.floor(i * (bufferLength / desiredBarCount));
+            const barHeight = dataArray[i]/1.2;
+            canvasContext.fillStyle = colors[i % colors.length];
+            canvasContext.fillRect(x, canvas.height - barHeight / 2, barWidth, barHeight / 2);
+            x += barWidth; 
+        }
+    }
+    function drawBars3() {
+        requestAnimationFrame(drawBars3);
+        analyser.getByteFrequencyData(dataArray);
+
+        //start canvas state
+        canvasContext.clearRect(0, 0, canvas.width, canvas.height);
+        canvasContext.fillStyle = 'rgb(0, 0, 0)';
+        canvasContext.fillRect(0, 0, canvas.width, canvas.height);
+
+        const desiredBarCount = 700;
+        const barWidth = canvas.width / desiredBarCount;
+        let x = 0;
+
+        //color for bars in this order
+        const colors = [
+            'rgb(5, 146, 18)',
+            'rgb(6, 208, 1)',
+            'rgb(155, 236, 0)',
+            'rgb(243, 255, 144)',
+        ];
+        
+        // creation of music bars
+        for (let i = 0; i < desiredBarCount; i++) {
+            const frequencyIndex = Math.floor(i * (bufferLength / desiredBarCount));
+            const barHeight = dataArray[i]/1.2;
+            canvasContext.fillStyle = colors[i % colors.length];
+            canvasContext.fillRect(x, canvas.height - barHeight / 2, barWidth, barHeight / 2);
+            x += barWidth; 
+        }
+    }
     function drawWave() {
         requestAnimationFrame(drawWave);
         analyser.getByteFrequencyData(dataArray);
@@ -133,56 +193,52 @@ function visualize() {
         canvasContext.lineTo(0, centerY);
         canvasContext.closePath();
     
-        // wave fill
-        canvasContext.fillStyle = 'rgba(0, 0, 255, 0.5)'; // Wave color
+        // wave color
+        canvasContext.fillStyle = 'rgb(238, 75, 43)'; 
         canvasContext.fill();
     }
     function matrix() {
-        const columnCount = 30; // Number of vertical lines
-        const columnWidth = canvas.width / columnCount; // Width of each line
-        const waveHeight = 50; // Maximum wave amplitude
-        const lineSpeed = 0.02; // Speed of wave oscillation
+       //line options
+        const columnCount = 30; 
+        const columnWidth = canvas.width / columnCount; 
+        const waveHeight = 50; 
+        const lineSpeed = 0.02; 
     
         requestAnimationFrame(matrix);
     
-        // Clear the canvas for new frame
+     
         canvasContext.clearRect(0, 0, canvas.width, canvas.height);
-    
-        // Black background
-        canvasContext.fillStyle = 'rgba(0, 0, 0, 1)'; 
+        canvasContext.fillStyle = 'rgb(0, 0, 0)';
         canvasContext.fillRect(0, 0, canvas.width, canvas.height);
     
-        // Get audio data
-        analyser.getByteFrequencyData(dataArray);
+       analyser.getByteFrequencyData(dataArray);
     
-        // Draw each vertical vibrating line
+        //lines
         for (let i = 0; i < columnCount; i++) {
             const frequencyIndex = Math.floor(i * (bufferLength / columnCount));
-            const frequencyValue = dataArray[frequencyIndex] / 255; // Normalize frequency value
+            const frequencyValue = dataArray[frequencyIndex] / 255; 
     
-            // Positioning of each vertical line
-            const x = i * columnWidth + columnWidth / 2; // Center each line in its column
-            const yStart = 0; // Start at the top of the canvas
-            const yEnd = canvas.height; // Go to the bottom of the canvas
+            //postion
+            const x = i * columnWidth + columnWidth ;
+            const yStart = 0; 
+            const yEnd = canvas.height*2; 
     
-            // Line's oscillation based on frequency
+            
             const oscillation = Math.sin(Date.now() * lineSpeed + i) * waveHeight * frequencyValue;
     
-            // Color based on frequency value (HSL for smooth transitions)
+           //color and width
             canvasContext.strokeStyle = `rgb(57, 255, 20)`;
-            canvasContext.lineWidth = columnWidth / 100; // Very thin line
+            canvasContext.lineWidth = columnWidth / 80; 
     
-            // Begin drawing the line
+            //line draw
             canvasContext.beginPath();
             canvasContext.moveTo(x + oscillation, yStart);
     
-            // Vibrating line from top to bottom
-            for (let y = yStart; y < yEnd; y += 10) { // Move down the line in increments
+            // line vibrate
+            for (let y = yStart; y < yEnd; y += 10) { 
                 const wave = Math.sin((y / 50) + Date.now() * lineSpeed) * waveHeight * frequencyValue;
                 canvasContext.lineTo(x + wave, y);
             }
-    
-            // Finalize the line
             canvasContext.stroke();
         }
     }
@@ -329,15 +385,21 @@ document.getElementById('close-visualizer').addEventListener('click', function()
  
 
     //drop down menu selection for funtion to run
-   if (selectedTemplate === 'drawBars') {
+   if (selectedTemplate === 'Bars') {
     requestAnimationFrame(drawBars);
-} else if (selectedTemplate === 'drawWave') {
+} else if (selectedTemplate === 'Wave') {
     requestAnimationFrame(drawWave);
-} else if (selectedTemplate === 'draw') {
+} else if (selectedTemplate === 'Shape') {
     requestAnimationFrame(draw);
-}else if(selectedTemplate === 'matrix'){
+}else if(selectedTemplate === 'Matrix'){
 requestAnimationFrame(matrix);
+}else if(selectedTemplate === 'Bars2'){
+    requestAnimationFrame(drawBars2);
+}
+else if(selectedTemplate === 'Bars3'){
+    requestAnimationFrame(drawBars3);
 }
 
 }
+
 
