@@ -1,18 +1,163 @@
 html, body {
 
     margin: 0;
-    width: 100%;    
-    height: 100%;
-    background-color: rgb(0, 0, 0);
-}
-
-canvas {
-    display:block;
     width: 100%;
     height: 100%;
-}
-
-canvas {
-    filter: drop-shadow(0 0 20px rgba (255,0,255,0.6));
+    background-color: rgb(255, 251, 243);
+    display: flex;
+    flex-direction: column; /* Stack elements vertically */
+    align-items: center;    /* Center elements horizontally */
     
-}
+    
+    }
+    
+    
+    
+    
+    
+    .title {
+        color: rgb(19, 26, 104);
+        font-size: 60px;
+        margin: 25px 0;
+        width: 100%;
+        text-align: center;
+        padding: 20px 0;
+      
+    }
+    
+    /* test */ 
+    .enterlink {
+        display: flex;
+        justify-content: center; /* Centers horizontally */
+        align-items: center;    /* Centers vertically */
+        height: 60px;         /* Make sure the parent has a height */
+        width: 40vh;
+        background: rgba(94, 92, 179, 0.2);
+        border-radius: 5px; 
+        color:rgb(19, 26, 104);
+        padding: 5px;
+        margin: 5px;
+    
+        font-size: 20px;
+        font-family:Georgia, 'Times New Roman', Times, serif;
+    }
+    
+    input[type="file"] {
+        display: none;
+    }
+    
+    #audio-player {
+        margin-top: 20px;
+        margin-bottom: 10px;
+      }
+      #visualizer {
+        margin-top: 20px;
+        width: 100%;
+        height: 300px; /* Adjust height */
+    }
+    
+    @media (max-width: 768px) {
+        .steps {
+          flex-direction: column;
+          align-items: center;
+        }
+      
+        .step {
+          width: 90%; /* Full width on mobile */
+        }
+    }
+      
+    label {
+        padding: 10px 20px;
+        background-color: rgb(19, 26, 104);
+        border-radius: 5px;
+        color: white;
+        cursor: pointer;
+        font-size: 18px;
+      }
+      label:hover {
+        background-color: rgb(33, 32, 87);
+    }
+    
+    
+    .instructions-title {
+        color:rgba(19, 26, 104);
+        font-size: 38px;
+        text-align: center;
+        margin: 20px 0;
+       
+    }
+    
+    .snippet {
+        color: rgba(33, 32, 87, 0.616);
+        font-size: 28px;
+        text-align: center;
+        margin: 5px 0;
+        font-family: Georgia, 'Times New Roman', Times, serif;
+    
+    }
+    
+    .step:hover {
+        background-color: rgba(94, 92, 179, 0.5);
+        transform: scale(1.05);
+        transition: transform 0.3s ease;
+    }
+      
+    .steps {
+        display: flex;                /* Flex container */
+        flex-direction: column;
+        justify-content: center; /* Space between left and right */
+        align-items: center;      /* Align items to the top */
+        margin: 65px 0;              /* Margin above and below */
+        width: 80%;                   /* Adjust width as needed */
+        font-size: 20px;
+    }
+    
+    
+    .stepList {
+        display: flex;                    /* Use flexbox for horizontal alignment */
+        justify-content: space-evenly;  
+        align-items: center; /* Space out the items evenly */
+        list-style-type: none;           /* Remove bullet points */
+        padding: 0;                      /* Remove default padding */
+        margin: 0;                       /* Remove default margin */
+    }
+    
+    .steps {
+        display: flex;                
+        justify-content: space-evenly; /* Space out items evenly */
+        align-items: center;           /* Center vertically */
+        margin: 65;               
+        width: 100%;                  /* Full width for the container */
+        font-size: 20px;
+        flex-direction: row;           /* Align steps side by side */
+    }
+    
+    .step {
+        background: rgba(94, 92, 179, 0.2); /* Light background */
+        color: rgba(19, 26, 104);           /* Text color */
+        padding: 30px;                      /* Padding around text */
+        margin: 40px;                       /* Space between steps */
+        border-radius: 10px;                /* Rounded corners */
+        text-align: center;                 /* Center text */
+        width: 30%;                         /* Adjust width of steps */
+        font-weight: bold;
+        transition: all 0.3s ease;
+        display: flex;
+        flex-direction: column;             /* Stack content inside */
+        justify-content: space-between;     /* Evenly distribute content */
+    }
+    
+    
+    .description {
+        color: rgba(19, 26, 104);   /* Lighter color for description */
+        font-size: 14px;              /* Smaller font size */
+        margin-top: 5px;     
+    }
+    
+    
+    .steps .step:last-child {
+        margin-top: 0;                /* Remove top margin for step 3 */
+    }
+    
+    
