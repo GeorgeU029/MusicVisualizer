@@ -1,163 +1,175 @@
+/* Apply to everything*/
 html, body {
 
     margin: 0;
     width: 100%;
     height: 100%;
-    background-color: rgb(255, 251, 243);
+    background-color: rgb(33, 37, 49); 
     display: flex;
-    flex-direction: column; /* Stack elements vertically */
-    align-items: center;    /* Center elements horizontally */
+    flex-direction: column; 
+    align-items: center;    
     
     
-    }
-    
-    
-    
-    
-    
-    .title {
-        color: rgb(19, 26, 104);
-        font-size: 60px;
-        margin: 25px 0;
-        width: 100%;
-        text-align: center;
-        padding: 20px 0;
-      
-    }
-    
-    /* test */ 
-    .enterlink {
-        display: flex;
-        justify-content: center; /* Centers horizontally */
-        align-items: center;    /* Centers vertically */
-        height: 60px;         /* Make sure the parent has a height */
-        width: 40vh;
-        background: rgba(94, 92, 179, 0.2);
-        border-radius: 5px; 
-        color:rgb(19, 26, 104);
-        padding: 5px;
-        margin: 5px;
-    
-        font-size: 20px;
-        font-family:Georgia, 'Times New Roman', Times, serif;
-    }
-    
-    input[type="file"] {
-        display: none;
-    }
-    
-    #audio-player {
-        margin-top: 20px;
-        margin-bottom: 10px;
-      }
-      #visualizer {
-        margin-top: 20px;
-        width: 100%;
-        height: 300px; /* Adjust height */
-    }
-    
-    @media (max-width: 768px) {
-        .steps {
-          flex-direction: column;
-          align-items: center;
-        }
-      
-        .step {
-          width: 90%; /* Full width on mobile */
-        }
-    }
-      
-    label {
-        padding: 10px 20px;
-        background-color: rgb(19, 26, 104);
-        border-radius: 5px;
-        color: white;
-        cursor: pointer;
-        font-size: 18px;
-      }
-      label:hover {
-        background-color: rgb(33, 32, 87);
-    }
-    
-    
-    .instructions-title {
-        color:rgba(19, 26, 104);
-        font-size: 38px;
-        text-align: center;
-        margin: 20px 0;
-       
-    }
-    
-    .snippet {
-        color: rgba(33, 32, 87, 0.616);
-        font-size: 28px;
-        text-align: center;
-        margin: 5px 0;
-        font-family: Georgia, 'Times New Roman', Times, serif;
-    
-    }
-    
-    .step:hover {
-        background-color: rgba(94, 92, 179, 0.5);
-        transform: scale(1.05);
-        transition: transform 0.3s ease;
-    }
-      
+}
+/*TITLE */
+.title {
+    color: rgb(75, 58, 112);
+    font-size: 60px;
+    margin: 25px 0;
+    width: 100%;
+    text-align: center;
+    padding: 20px 0;
+  
+}
+
+/* LINK/FILEINPUT */ 
+.enterlink {
+    display: flex;
+    align-items: center; 
+}
+
+.enterlink label {
+    margin-right: 10px; 
+}
+
+.enterlink input[type="file"],
+.enterlink select {
+    margin-right: 20px;
+}
+
+input[type="file"] {
+    display: none;
+}
+/*AUDIO PLYAER */
+#audio-player {
+    margin-top: 20px;
+    margin-bottom: 10px;
+}
+/*VISUALIZER CANVAS */
+#visualizer {
+    position: absolute; 
+    top: 0;            
+    left: 0;          
+    width: 100vw;      
+    height: 100vh;     
+    pointer-events: none;
+}
+/* MEDIA*/
+@media (max-width:100% ) {
     .steps {
-        display: flex;                /* Flex container */
-        flex-direction: column;
-        justify-content: center; /* Space between left and right */
-        align-items: center;      /* Align items to the top */
-        margin: 65px 0;              /* Margin above and below */
-        width: 80%;                   /* Adjust width as needed */
-        font-size: 20px;
+      flex-direction: column;
+      align-items: center;
     }
-    
-    
-    .stepList {
-        display: flex;                    /* Use flexbox for horizontal alignment */
-        justify-content: space-evenly;  
-        align-items: center; /* Space out the items evenly */
-        list-style-type: none;           /* Remove bullet points */
-        padding: 0;                      /* Remove default padding */
-        margin: 0;                       /* Remove default margin */
-    }
-    
-    .steps {
-        display: flex;                
-        justify-content: space-evenly; /* Space out items evenly */
-        align-items: center;           /* Center vertically */
-        margin: 65;               
-        width: 100%;                  /* Full width for the container */
-        font-size: 20px;
-        flex-direction: row;           /* Align steps side by side */
-    }
-    
+  
     .step {
-        background: rgba(94, 92, 179, 0.2); /* Light background */
-        color: rgba(19, 26, 104);           /* Text color */
-        padding: 30px;                      /* Padding around text */
-        margin: 40px;                       /* Space between steps */
-        border-radius: 10px;                /* Rounded corners */
-        text-align: center;                 /* Center text */
-        width: 30%;                         /* Adjust width of steps */
-        font-weight: bold;
-        transition: all 0.3s ease;
-        display: flex;
-        flex-direction: column;             /* Stack content inside */
-        justify-content: space-between;     /* Evenly distribute content */
+      width: 90%; 
     }
-    
-    
-    .description {
-        color: rgba(19, 26, 104);   /* Lighter color for description */
-        font-size: 14px;              /* Smaller font size */
-        margin-top: 5px;     
-    }
-    
-    
-    .steps .step:last-child {
-        margin-top: 0;                /* Remove top margin for step 3 */
-    }
-    
+}
+  /* LABEL*/
+label {
+    padding: 10px 20px;
+    background-color: rgb(75, 58, 112); 
+    border-radius: 5px;
+    color: white;
+    cursor: pointer;
+    font-size: 18px;
+}
+
+/*WHAT TO DO... */
+.instructions-title {
+    color: rgb(33, 37, 49); 
+    font-size: 38px;
+    text-align: center;
+    margin: 20px 0;
+   
+}
+/* STEP-START*/
+.snippet {
+    color: rgb(75, 58, 112);
+    font-size: 28px;
+    text-align: center;
+    margin: 5px 0;
+    font-family: Georgia, 'Times New Roman', Times, serif;
+
+}
+
+  
+.steps {
+    display: flex;               
+    flex-direction: column;
+    justify-content: center; 
+    align-items: center;      
+    margin: 65px 0;              
+    width: 80%;                   
+    font-size: 20px;
+}
+
+
+.stepList {
+    display: flex;                   
+    justify-content: space-evenly;  
+    align-items: center; 
+    list-style-type: none;           
+    padding: 0;                    
+    margin: 0;                       
+}
+
+.steps {
+    display: flex;                
+    justify-content: space-evenly; 
+    align-items: center;           
+    margin: 65;               
+    width: 100%;                  
+    font-size: 20px;
+    flex-direction: row;           
+}
+
+.step {
+    background: rgba(183, 162, 201, 0.2); 
+    color: rgb(33, 37, 49);           
+    padding: 30px;                      
+    margin: 40px;                       
+    border-radius: 10px;               
+    text-align: center;                 
+    width: 30%;                         
+    font-weight: bold;
+    transition: all 0.3s ease;
+    display: flex;
+    flex-direction: column;             
+    justify-content: space-between;     
+}
+
+
+.description {
+    color: rgb(33, 37, 49);   
+    font-size: 14px;            
+    margin-top: 5px;     
+}
+
+
+.steps .step:last-child {
+    margin-top: 0;              
+}
+/*STEP ENDS */
+
+/* VISUZLIZER CLOSE*/
+#close-visualizer {
+    display: none;
+    position: fixed; 
+    top: 20px;
+    right: 20px;
+    background-color: rgb(197, 195, 196); 
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    font-size: 16px;
+    border-radius: 5px;
+    cursor: pointer;
+    z-index: 100; 
+}
+
+#close-visualizer:hover {
+    background-color: rgb(183, 162, 201); 
+}
+
     
