@@ -131,7 +131,7 @@ function visualize() {
         canvasContext.fillStyle = 'rgb(0, 0, 0)';
         canvasContext.fillRect(0, 0, canvas.width, canvas.height);
 
-        const desiredBarCount = 700;
+        const desiredBarCount = 200;
         const barWidth = canvas.width / desiredBarCount;
         let x = 0;
 
@@ -141,6 +141,39 @@ function visualize() {
             'rgb(6, 208, 1)',
             'rgb(155, 236, 0)',
             'rgb(243, 255, 144)',
+        ];
+        
+        // creation of music bars
+        for (let i = 0; i < desiredBarCount; i++) {
+            const frequencyIndex = Math.floor(i * (bufferLength / desiredBarCount));
+            const barHeight = dataArray[i]/1.2;
+            canvasContext.fillStyle = colors[i % colors.length];
+            canvasContext.fillRect(x, canvas.height - barHeight / 2, barWidth, barHeight / 2);
+            x += barWidth; 
+        }
+    }
+    function drawBars4() {
+        requestAnimationFrame(drawBars4);
+        analyser.getByteFrequencyData(dataArray);
+
+        //start canvas state
+        canvasContext.clearRect(0, 0, canvas.width, canvas.height);
+        canvasContext.fillStyle = 'rgb(0, 0, 0)';
+        canvasContext.fillRect(0, 0, canvas.width, canvas.height);
+
+        const desiredBarCount = 300;
+        const barWidth = canvas.width / desiredBarCount;
+        let x = 0;
+
+        //color for bars in this order
+        const colors = [
+            'rgb(11,211,211)',
+            'rgb(248,144,231)',
+            'rgb(208,208,208)',
+            'rgb(11,211,211)',
+            'rgb(248,144,231)',
+           
+            'rgb(0,0,0)',
         ];
         
         // creation of music bars
@@ -173,9 +206,54 @@ function visualize() {
         for (let i = 0; i < waveLength; i++) {
 
             // MATH!!!! the angle based on the position
-            const angle = i * waveFrequency + performance.now() * 0.1; // Dynamic wave effect
-            const frequencyIndex = Math.floor((i / waveLength) * bufferLength); // Normalize index based on wave length
-            const frequencyValue = dataArray[frequencyIndex] / 255; // Normalize frequency value
+            const angle = i * waveFrequency + performance.now() * 0.1; 
+            const frequencyIndex = Math.floor((i / waveLength) * bufferLength); 
+            const frequencyValue = dataArray[frequencyIndex] / 255; 
+    
+            // MATH!!! the y position of the wave
+            const y = centerY + Math.sin(angle) * waveHeight * frequencyValue;
+    
+            // Move to the starting point
+            if (i === 0) {
+                canvasContext.moveTo(i, y);
+            } else {
+                canvasContext.lineTo(i, y); 
+            }
+        }
+    
+        //bottom line of the wave
+        canvasContext.lineTo(waveLength, centerY);
+        canvasContext.lineTo(0, centerY);
+        canvasContext.closePath();
+    
+        // wave color
+        canvasContext.fillStyle = 'rgb(238, 75, 43)'; 
+        canvasContext.fill();
+    }
+    function drawWave2() {
+        requestAnimationFrame(drawWave2);
+        analyser.getByteFrequencyData(dataArray);
+    
+        // create canvas state
+        canvasContext.clearRect(0, 0, canvas.width, canvas.height);
+        canvasContext.fillStyle = 'rgb(255, 255, 255)';
+        canvasContext.fillRect(0, 0, canvas.width, canvas.height);
+        
+        const centerY = canvas.height / 2; 
+        const waveLength = canvas.width*4; 
+        const waveHeight = 50;
+        const waveFrequency = 1; 
+        
+        //  drawing the wave
+        canvasContext.beginPath();
+        
+        // loop through the wave length
+        for (let i = 0; i < waveLength; i++) {
+
+            // MATH!!!! the angle based on the position
+            const angle = i * waveFrequency + performance.now() * 0.1; 
+            const frequencyIndex = Math.floor((i / waveLength) * bufferLength); 
+            const frequencyValue = dataArray[frequencyIndex] / 255; 
     
             // MATH!!! the y position of the wave
             const y = centerY + Math.sin(angle) * waveHeight * frequencyValue;
@@ -194,7 +272,7 @@ function visualize() {
         canvasContext.closePath();
     
         // wave color
-        canvasContext.fillStyle = 'rgb(238, 75, 43)'; 
+        canvasContext.fillStyle = 'rgb(240, 90, 126)'; 
         canvasContext.fill();
     }
     function matrix() {
@@ -242,20 +320,61 @@ function visualize() {
             canvasContext.stroke();
         }
     }
+    function matrix2() {
+        //line options
+         const columnCount = 30; 
+         const columnWidth = canvas.width / columnCount; 
+         const waveHeight = 50; 
+         const lineSpeed = 0.02; 
+     
+         requestAnimationFrame(matrix2);
+     
+      
+         canvasContext.clearRect(0, 0, canvas.width, canvas.height);
+         canvasContext.fillStyle = 'rgb(0,0,0)';
+         canvasContext.fillRect(0, 0, canvas.width, canvas.height);
+     
+        analyser.getByteFrequencyData(dataArray);
+     
+         //lines
+         for (let i = 0; i < columnCount; i++) {
+             const frequencyIndex = Math.floor(i * (bufferLength / columnCount));
+             const frequencyValue = dataArray[frequencyIndex] / 255; 
+     
+             //postion
+             const x = i * columnWidth + columnWidth ;
+             const yStart = 0; 
+             const yEnd = canvas.height*2; 
+     
+             
+             const oscillation = Math.sin(Date.now() * lineSpeed + i) * waveHeight * frequencyValue;
+     
+            //color and width
+             canvasContext.strokeStyle = 'rgb(220, 20, 60)';
+             canvasContext.lineWidth = columnWidth / 80; 
+     
+             //line draw
+             canvasContext.beginPath();
+             canvasContext.moveTo(x + oscillation, yStart);
+     
+             // line vibrate
+             for (let y = yStart; y < yEnd; y += 10) { 
+                 const wave = Math.sin((y / 50) + Date.now() * lineSpeed) * waveHeight * frequencyValue;
+                 canvasContext.lineTo(x + wave, y);
+             }
+             canvasContext.stroke();
+         }
+     }
     
     function draw() {
   
-
-    
         const shapes = ['circle', 'triangle', 'square', 'star', 'hexagon', 'diamond', 'oval'];
-    
         //  variables to preserve their values across everywher
         let shapeCounter = draw.shapeCounter || 0;
         let lastSwitchTime = draw.lastSwitchTime || Date.now();
     
         requestAnimationFrame(draw);
         canvasContext.clearRect(0, 0, canvas.width, canvas.height);
-    
         //  background
         canvasContext.fillStyle = 'rgb(16, 24, 32)';
         canvasContext.fillRect(0, 0, canvas.width, canvas.height);
@@ -297,7 +416,6 @@ function visualize() {
         const centerX = canvas.width / 2;
         const centerY = canvas.height / 2;
         const size = 30; 
-    
        
         canvasContext.save();     
     
@@ -374,6 +492,8 @@ function visualize() {
         // restart canvas
         canvasContext.restore();
     }
+
+    
     // close button
 document.getElementById('close-visualizer').addEventListener('click', function() {
     // refresh page
@@ -389,15 +509,24 @@ document.getElementById('close-visualizer').addEventListener('click', function()
     requestAnimationFrame(drawBars);
 } else if (selectedTemplate === 'Wave') {
     requestAnimationFrame(drawWave);
-} else if (selectedTemplate === 'Shape') {
+}else if (selectedTemplate === 'Wave2') {
+        requestAnimationFrame(drawWave2);
+}
+ else if (selectedTemplate === 'Shape') {
     requestAnimationFrame(draw);
 }else if(selectedTemplate === 'Matrix'){
 requestAnimationFrame(matrix);
-}else if(selectedTemplate === 'Bars2'){
+}else if(selectedTemplate === 'Matrix2'){
+    requestAnimationFrame(matrix2);
+    }
+else if(selectedTemplate === 'Bars2'){
     requestAnimationFrame(drawBars2);
 }
 else if(selectedTemplate === 'Bars3'){
     requestAnimationFrame(drawBars3);
+}
+else if(selectedTemplate === 'Bars4'){
+    requestAnimationFrame(drawBars4);
 }
 
 }
