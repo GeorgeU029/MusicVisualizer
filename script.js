@@ -137,7 +137,56 @@ function visualize() {
         canvasContext.fillStyle = 'rgba(0, 0, 255, 0.5)'; // Wave color
         canvasContext.fill();
     }
-
+    function matrix() {
+        const columnCount = 30; // Number of vertical lines
+        const columnWidth = canvas.width / columnCount; // Width of each line
+        const waveHeight = 50; // Maximum wave amplitude
+        const lineSpeed = 0.02; // Speed of wave oscillation
+    
+        requestAnimationFrame(matrix);
+    
+        // Clear the canvas for new frame
+        canvasContext.clearRect(0, 0, canvas.width, canvas.height);
+    
+        // Black background
+        canvasContext.fillStyle = 'rgba(0, 0, 0, 1)'; 
+        canvasContext.fillRect(0, 0, canvas.width, canvas.height);
+    
+        // Get audio data
+        analyser.getByteFrequencyData(dataArray);
+    
+        // Draw each vertical vibrating line
+        for (let i = 0; i < columnCount; i++) {
+            const frequencyIndex = Math.floor(i * (bufferLength / columnCount));
+            const frequencyValue = dataArray[frequencyIndex] / 255; // Normalize frequency value
+    
+            // Positioning of each vertical line
+            const x = i * columnWidth + columnWidth / 2; // Center each line in its column
+            const yStart = 0; // Start at the top of the canvas
+            const yEnd = canvas.height; // Go to the bottom of the canvas
+    
+            // Line's oscillation based on frequency
+            const oscillation = Math.sin(Date.now() * lineSpeed + i) * waveHeight * frequencyValue;
+    
+            // Color based on frequency value (HSL for smooth transitions)
+            canvasContext.strokeStyle = `rgb(57, 255, 20)`;
+            canvasContext.lineWidth = columnWidth / 100; // Very thin line
+    
+            // Begin drawing the line
+            canvasContext.beginPath();
+            canvasContext.moveTo(x + oscillation, yStart);
+    
+            // Vibrating line from top to bottom
+            for (let y = yStart; y < yEnd; y += 10) { // Move down the line in increments
+                const wave = Math.sin((y / 50) + Date.now() * lineSpeed) * waveHeight * frequencyValue;
+                canvasContext.lineTo(x + wave, y);
+            }
+    
+            // Finalize the line
+            canvasContext.stroke();
+        }
+    }
+    
     function draw() {
   
 
@@ -286,6 +335,9 @@ document.getElementById('close-visualizer').addEventListener('click', function()
     requestAnimationFrame(drawWave);
 } else if (selectedTemplate === 'draw') {
     requestAnimationFrame(draw);
+}else if(selectedTemplate === 'matrix'){
+requestAnimationFrame(matrix);
 }
+
 }
 
