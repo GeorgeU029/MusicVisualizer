@@ -7,45 +7,45 @@
     <title>Music Visualizer</title>
 </head>
 <body>
-    <h1 class="title"> MusicVisualizer</h1>
+    <h1 class="title">Music Visualizer</h1>
 
     <div class="enterlink">
-        <input type="file" id="fileInput" accept="audio/*" />
-        <label for="fileInput">Choose a file</label>
-
+        <label for="audio-file">Choose a file:</label>
+        <input type="file" id="audio-file" accept="audio/*" />
+        
+        <select name="templates" id="templates">
+            <option value="templates">Select a Template</option>
+            <option value="draw">draw</option>
+            <option value="drawBars">drawBars </option>
+            <option value="drawWave">drawWave</option>
+        </select>    
     </div>
+    <audio id="audio-player" controls></audio>
+    <canvas id="visualizer"></canvas>
+    
+    <button id="close-visualizer" style="display: none; position: absolute; top: 20px; right: 20px;">Close</button>
 
-    <audio id="audio-player" controls></audio> <!-- Audio player -->
-    <canvas id="visualizer"></canvas> <!-- Canvas for the visualizer -->
+    <h2 class="instructions-title">How to make your music visualizer</h2>
+    <p class="snippet">Trust us, it's easy!</p>
+
+    <div class="steps">
+        <div class="left-steps">
+            <ul class="stepList">
+                <li class="step">
+                    <span>1. Select template</span>
+                    <p class="description">Choose your favorite out of our templates for your video.</p>
+                </li>
+                <li class="step">
+                    <span>2. Upload your audio</span>
+                    <p class="description">Upload an audio file and our system will analyze the song and match it to the template.</p>
+                </li>
+            </ul>
+        </div>
+    </div>
 
     <script src="script.js"></script>
-
 </body>
-
-<h2 class="instructions-title">How to make your music visualizer</h2>
-<p class="snippet">Trust us it's easy!</p>
-
-<div class="steps">
-    <div class="left-steps">
-        <ul class="stepList">
-            <li class="step">
-                <span>1. Select template</span>
-                <p class="description">Choose your favorite out of our templates for your video.</p>
-            </li>
-            <li class="step">
-                <span>2. Upload your audio</span>
-                <p class="description">Upload an audio file and our system will analyze the song and match it to the template.</p>
-            </li>
-            <li class="step">
-                <span>3. Download your video</span>
-                <p class="description">Download the video and you're done!</p>
-            </li>
-        </ul>
-    </div>
-</div>
-
-
-
 </html>
+
     
     
