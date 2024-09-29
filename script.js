@@ -1,11 +1,16 @@
 let audioContext;
 let analyser;
+let selectedTemplate = "drawBars";
 
 // create and edit canvas
 const canvas = document.getElementById('visualizer');
 canvas.width = window.innerWidth;
 const canvasContext = canvas.getContext('2d');
 
+document.getElementById('templates').addEventListener('change', function() {
+    selectedTemplate = this.value;
+    console.log("Selected template: " + selectedTemplate);
+});
 
 //audio file handling
 document.getElementById('audio-file').addEventListener('change', function() {
@@ -45,26 +50,30 @@ document.getElementById('audio-file').addEventListener('change', function() {
     reader.readAsDataURL(file);
 });
 
-// Visualization function
+// main visulizer function
 function visualize() {
     const bufferLength = analyser.frequencyBinCount;
     const dataArray = new Uint8Array(bufferLength);
 
-    // drawBars: a simple version of the audio visualizer
+    document.getElementById('close-visualizer').style.display = 'block';
+    document.getElementById('close-visualizer').addEventListener('click', function() {
+        window.location.reload(); // Reload the page to reset everything
+    });
+    // drawBars: first ediiton able to change colors and amount of bars
     function drawBars() {
         requestAnimationFrame(drawBars);
         analyser.getByteFrequencyData(dataArray);
 
-        // Clear the canvas and set background color
+        //start canvas state
         canvasContext.clearRect(0, 0, canvas.width, canvas.height);
         canvasContext.fillStyle = 'rgb(0, 0, 0)';
         canvasContext.fillRect(0, 0, canvas.width, canvas.height);
 
-        const desiredBarCount = 600;
+        const desiredBarCount = 700;
         const barWidth = canvas.width / desiredBarCount;
         let x = 0;
 
-        // Colors for bars
+        //color for bars in this order
         const colors = [
             'rgb(250,235,44)',
             'rgb(245,39,137)',
@@ -76,38 +85,39 @@ function visualize() {
         
         // creation of music bars
         for (let i = 0; i < desiredBarCount; i++) {
-            //const frequencyIndex = Math.floor(i * (bufferLength / desiredBarCount));
-            const barHeight = dataArray[i]/1.5;
-
+            const frequencyIndex = Math.floor(i * (bufferLength / desiredBarCount));
+            const barHeight = dataArray[i]/1.2;
             canvasContext.fillStyle = colors[i % colors.length];
             canvasContext.fillRect(x, canvas.height - barHeight / 2, barWidth, barHeight / 2);
-            x += barWidth; // Move x position for the next bar
+            x += barWidth; 
         }
     }
     function drawWave() {
         requestAnimationFrame(drawWave);
         analyser.getByteFrequencyData(dataArray);
     
-        // Clear the canvas
+        // create canvas state
         canvasContext.clearRect(0, 0, canvas.width, canvas.height);
+        canvasContext.fillStyle = 'rgb(0, 0, 0)';
+        canvasContext.fillRect(0, 0, canvas.width, canvas.height);
         
-        const centerY = canvas.height / 2; // Center y position
-        const waveLength = canvas.width*4; // Length of the wave
-        const waveHeight = 50; // Height of the wave
-        const waveFrequency = 1; // Frequency of the wave
+        const centerY = canvas.height / 2; 
+        const waveLength = canvas.width*4; 
+        const waveHeight = 50;
+        const waveFrequency = 1; 
         
-        // Start drawing the wave
+        //  drawing the wave
         canvasContext.beginPath();
         
-        // Loop through the wave length
+        // loop through the wave length
         for (let i = 0; i < waveLength; i++) {
 
-            // Calculate the angle based on the position
+            // MATH!!!! the angle based on the position
             const angle = i * waveFrequency + performance.now() * 0.1; // Dynamic wave effect
             const frequencyIndex = Math.floor((i / waveLength) * bufferLength); // Normalize index based on wave length
             const frequencyValue = dataArray[frequencyIndex] / 255; // Normalize frequency value
     
-            // Calculate the y position of the wave
+            // MATH!!! the y position of the wave
             const y = centerY + Math.sin(angle) * waveHeight * frequencyValue;
     
             // Move to the starting point
@@ -118,97 +128,83 @@ function visualize() {
             }
         }
     
-        // Draw the bottom line of the wave
+        //bottom line of the wave
         canvasContext.lineTo(waveLength, centerY);
         canvasContext.lineTo(0, centerY);
         canvasContext.closePath();
     
-        // Fill the wave
+        // wave fill
         canvasContext.fillStyle = 'rgba(0, 0, 255, 0.5)'; // Wave color
         canvasContext.fill();
     }
 
     function draw() {
-        // Define theme and shapes within the draw function
-        const theme = {
-            background: 'black', // Background color of the canvas
-            lineColor: 'white',  // Line color for shapes
-            barColor: (barHeight) => {
-                // Bar color changes based on the bar's height
-                if (barHeight > 200) {
-                    return 'rgb(233,0,255)'; // Bright purple for high bars
-                } else if (barHeight > 100) {
-                    return 'rgb(245,39,137)'; // Pinkish color for medium bars
-                } else {
-                    return 'rgb(18,125,255)'; // Blue for lower bars
-                }
-            }
-        };
+  
+
     
         const shapes = ['circle', 'triangle', 'square', 'star', 'hexagon', 'diamond', 'oval'];
     
-        // Static variables to preserve their values across calls
+        //  variables to preserve their values across everywher
         let shapeCounter = draw.shapeCounter || 0;
         let lastSwitchTime = draw.lastSwitchTime || Date.now();
     
         requestAnimationFrame(draw);
         canvasContext.clearRect(0, 0, canvas.width, canvas.height);
     
-        // Set background
-        canvasContext.fillStyle = theme.background;
+        //  background
+        canvasContext.fillStyle = 'rgb(16, 24, 32)';
         canvasContext.fillRect(0, 0, canvas.width, canvas.height);
     
         analyser.getByteFrequencyData(dataArray);
     
         const averageFrequency = dataArray.reduce((sum, value) => sum + value, 0) / bufferLength;
         const angle = Date.now() * 0.002;
-        const rotationSpeed = (averageFrequency / 255) * 0.5; // Reduced rotation speed
+        const rotationSpeed = (averageFrequency / 255) * 0.5; 
     
-        // Switch shape every 4 seconds
+        //  shape every 4 seconds can be changed
         if (Date.now() - lastSwitchTime > 4000) {
             shapeCounter = (shapeCounter + 1) % shapes.length;
             lastSwitchTime = Date.now();
         }
     
-        // Pass theme to drawShape
-        drawShape(angle, shapes[shapeCounter], rotationSpeed, dataArray, theme);
+        drawShape(angle, shapes[shapeCounter], rotationSpeed, dataArray );
     
         const barWidth = (canvas.width / bufferLength) * 2.5;
         let x = 0;
     
         for (let i = 0; i < bufferLength; i++) {
-            let barHeight = dataArray[i] * 1.5; // Increased sensitivity
+            let barHeight = dataArray[i] * 0.9; 
             let pulse = Math.sin(Date.now() * 0.005 + i) * 10;
             barHeight += pulse;
     
-            canvasContext.fillStyle = theme.barColor(barHeight);
+            canvasContext.fillStyle = 'rgb(24,202,230)';
             canvasContext.fillRect(x, canvas.height - barHeight / 2, barWidth, barHeight / 2);
             x += barWidth + 1;
         }
     
-        // Store static variables for next frame
+        //store variable
         draw.shapeCounter = shapeCounter;
         draw.lastSwitchTime = lastSwitchTime;
     }
     
-    // Update the drawShape function to accept the theme as a parameter
-    function drawShape(angle, shapeType, rotationSpeed, dataArray, theme) {
+//drawShape function used along the drawfunction for cool effect!
+    function drawShape(angle, shapeType, rotationSpeed, dataArray) {
         const centerX = canvas.width / 2;
         const centerY = canvas.height / 2;
-        const size = 50; // Size of the shapes
+        const size = 30; 
     
-        // Save the current context state
+       
         canvasContext.save();     
     
-        // Translate to the center of the canvas
+        
         canvasContext.translate(centerX, centerY);
         
-        // Rotate the canvas only if it's not a triangle
+        // rotation of shapes triangle not included
         if (shapeType !== 'triangle') {
             canvasContext.rotate(angle * rotationSpeed);
         }
     
-        canvasContext.strokeStyle = theme.lineColor;
+        canvasContext.strokeStyle = 'rgb(24,202,230)';
         canvasContext.lineWidth = 2;
     
         if (shapeType === 'circle') {
@@ -270,15 +266,26 @@ function visualize() {
             canvasContext.stroke();
         }
     
-        // Restore the context to its original state
+        // restart canvas
         canvasContext.restore();
     }
+    // close button
+document.getElementById('close-visualizer').addEventListener('click', function() {
+    // refresh page
+    window.location.reload();
+});
+
     
-    
-    // Update the drawShape function to accept the theme as a parameter
+   
  
 
-    // Start the drawing function after setting up everything
-   // drawBars();
-    drawBars();
+    //drop down menu selection for funtion to run
+   if (selectedTemplate === 'drawBars') {
+    requestAnimationFrame(drawBars);
+} else if (selectedTemplate === 'drawWave') {
+    requestAnimationFrame(drawWave);
+} else if (selectedTemplate === 'draw') {
+    requestAnimationFrame(draw);
 }
+}
+
